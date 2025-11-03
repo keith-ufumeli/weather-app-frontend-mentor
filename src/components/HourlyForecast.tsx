@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useWeather } from '@/hooks/useWeather';
 import { formatShortDayName, formatTime, formatTemperature } from '@/utils/weatherUtils';
 import {
@@ -11,35 +11,62 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { WeatherIcon } from '@/components/WeatherIcon';
 
+/**
+ * Parse time string to Date object, handling multiple formats
+ */
+function parseHourTime(timeString: string): Date {
+  if (timeString.includes('T')) {
+    return new Date(timeString);
+  } else if (timeString.includes(' ')) {
+    return new Date(timeString);
+  } else {
+    // Assume it's just a date, add midnight time
+    return new Date(`${timeString}T00:00:00`);
+  }
+}
+
 export function HourlyForecast() {
   const { weatherData, units } = useWeather();
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
+  const [currentTime, setCurrentTime] = useState(() => new Date());
 
-  // Get hourly data for selected day
+  // Update current time every minute to refresh the filtered list
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Get hourly data for selected day, filtered to show only current and future hours
   // Open-Meteo returns hourly data for the next 7 days
-  // We need to group by day
+  // We need to group by day and filter past hours
   const hourlyByDay = useMemo(() => {
     if (!weatherData?.hourly || !weatherData?.daily) return [];
+    
+    // Get current hour time for comparison (use currentTime state to trigger recalculation)
+    const now = currentTime;
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hour = String(now.getHours()).padStart(2, '0');
+    const currentHourTime = `${year}-${month}-${day}T${hour}:00`;
+    const currentHourDate = parseHourTime(currentHourTime);
     
     // Create a map of date strings to hourly data
     const hourlyMap = new Map<string, typeof weatherData.hourly>();
     
     weatherData.hourly.forEach((hour) => {
       // Extract date from timestamp string
-      // The API returns timestamps in format "YYYY-MM-DDTHH:mm" or "YYYY-MM-DD HH:mm:ss"
-      // when timezone: 'auto' is used, dates are already in local timezone
-      // Extract date part (YYYY-MM-DD) directly from the string to avoid timezone conversion
       const hourDateStr = hour.time;
       let dateKey: string;
       
       if (hourDateStr.includes('T')) {
-        // ISO format: "YYYY-MM-DDTHH:mm" - extract date part before 'T'
         dateKey = hourDateStr.split('T')[0];
       } else if (hourDateStr.includes(' ')) {
-        // Space-separated: "YYYY-MM-DD HH:mm:ss" - extract date part before space
         dateKey = hourDateStr.split(' ')[0];
       } else {
-        // Already just a date string
         dateKey = hourDateStr;
       }
       
@@ -49,14 +76,33 @@ export function HourlyForecast() {
       hourlyMap.get(dateKey)!.push(hour);
     });
 
-    // Match hourly data to daily forecast dates
-    const days = weatherData.daily.map((day) => ({
-      date: day.date,
-      hours: hourlyMap.get(day.date) || [],
-    }));
+    // Match hourly data to daily forecast dates and filter past hours
+    const days = weatherData.daily.map((day) => {
+      const dayHours = hourlyMap.get(day.date) || [];
+      
+      // Filter out past hours - only keep current hour and future hours
+      const futureHours = dayHours.filter((hour) => {
+        const hourDate = parseHourTime(hour.time);
+        // Include if hour is >= current hour (same hour or future)
+        return hourDate >= currentHourDate;
+      });
+
+      return {
+        date: day.date,
+        hours: futureHours,
+      };
+    });
 
     return days;
-  }, [weatherData]);
+  }, [weatherData, currentTime]);
+
+  // Auto-select first day that has forecast data (current day with future hours)
+  useEffect(() => {
+    const firstDayWithHours = hourlyByDay.findIndex((day) => day.hours.length > 0);
+    if (firstDayWithHours !== -1 && firstDayWithHours !== selectedDayIndex) {
+      setSelectedDayIndex(firstDayWithHours);
+    }
+  }, [hourlyByDay, selectedDayIndex]);
 
   if (!weatherData || !weatherData.daily.length) {
     return null;
