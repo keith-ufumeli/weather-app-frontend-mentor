@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { useLocationSearch } from '@/hooks/useLocationSearch';
-import { useWeather } from '@/context/WeatherContext';
+import { useWeather } from '@/hooks/useWeather';
 import type { Location } from '@/types/weather';
 import searchIcon from '@/assets/images/icon-search.svg';
 import loadingIcon from '@/assets/images/icon-loading.svg';

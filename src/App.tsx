@@ -1,4 +1,4 @@
-import { WeatherProvider } from './context/WeatherContext';
+import { WeatherProvider } from './context/WeatherContextProvider';
 import { WeatherApp } from './components/WeatherApp';
 import './App.css';
 

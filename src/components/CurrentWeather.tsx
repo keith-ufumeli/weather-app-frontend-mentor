@@ -1,5 +1,5 @@
 import { WeatherIcon } from '@/components/WeatherIcon';
-import { useWeather } from '@/context/WeatherContext';
+import { useWeather } from '@/hooks/useWeather';
 import { formatTemperature, getLocationDisplayName } from '@/utils/weatherUtils';
 import bgTodayLarge from '@/assets/images/bg-today-large.svg';
 import bgTodaySmall from '@/assets/images/bg-today-small.svg';

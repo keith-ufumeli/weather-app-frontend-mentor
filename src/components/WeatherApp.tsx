@@ -7,7 +7,7 @@ import { HourlyForecast } from '@/components/HourlyForecast';
 import { LoadingState } from '@/components/LoadingState';
 import { ErrorState } from '@/components/ErrorState';
 import { EmptyState } from '@/components/EmptyState';
-import { useWeather } from '@/context/WeatherContext';
+import { useWeather } from '@/hooks/useWeather';
 
 export function WeatherApp() {
   const { weatherData, loading, error, loadWeatherData, clearError } = useWeather();

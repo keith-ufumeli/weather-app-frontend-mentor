@@ -1,8 +1,9 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import type { WeatherData, Location, Units, WeatherError } from '@/types/weather';
 import { fetchWeatherData } from '@/services/weatherApi';
+import { WeatherContext } from './WeatherContext';
 
-interface WeatherContextType {
+export interface WeatherContextType {
   weatherData: WeatherData | null;
   units: Units;
   loading: boolean;
@@ -11,8 +12,6 @@ interface WeatherContextType {
   loadWeatherData: (location: Location) => Promise<void>;
   clearError: () => void;
 }
-
-const WeatherContext = createContext<WeatherContextType | undefined>(undefined);
 
 const UNITS_STORAGE_KEY = 'weather-app-units';
 
@@ -76,12 +75,4 @@ export function WeatherProvider({ children }: { children: React.ReactNode }) {
       {children}
     </WeatherContext.Provider>
   );
-}
-
-export function useWeather() {
-  const context = useContext(WeatherContext);
-  if (context === undefined) {
-    throw new Error('useWeather must be used within a WeatherProvider');
-  }
-  return context;
 }

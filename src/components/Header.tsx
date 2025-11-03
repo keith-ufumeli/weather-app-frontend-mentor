@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useWeather } from '@/context/WeatherContext';
+import { useWeather } from '@/hooks/useWeather';
 import logoIcon from '@/assets/images/logo.svg';
 import unitsIcon from '@/assets/images/icon-units.svg';
 import checkmarkIcon from '@/assets/images/icon-checkmark.svg';

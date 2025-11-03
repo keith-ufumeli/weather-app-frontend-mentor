@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useWeather } from '@/context/WeatherContext';
+import { useWeather } from '@/hooks/useWeather';
 import { formatShortDayName, formatTime, formatTemperature } from '@/utils/weatherUtils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,14 +8,11 @@ export function HourlyForecast() {
   const { weatherData, units } = useWeather();
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
 
-  if (!weatherData || !weatherData.daily.length) {
-    return null;
-  }
-
   // Get hourly data for selected day
   // Open-Meteo returns hourly data for the next 7 days
   // We need to group by day
   const hourlyByDay = useMemo(() => {
+    if (!weatherData?.hourly) return [];
     const days: { date: string; hours: typeof weatherData.hourly }[] = [];
     
     weatherData.hourly.forEach((hour) => {
@@ -35,10 +32,13 @@ export function HourlyForecast() {
     });
 
     return days.slice(0, 7); // First 7 days
-  }, [weatherData.hourly]);
+  }, [weatherData]);
+
+  if (!weatherData || !weatherData.daily.length) {
+    return null;
+  }
 
   const selectedDayHours = hourlyByDay[selectedDayIndex]?.hours || [];
-  const selectedDate = hourlyByDay[selectedDayIndex]?.date;
 
   return (
     <section aria-label="Hourly forecast">

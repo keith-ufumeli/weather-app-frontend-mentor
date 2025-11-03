@@ -1,4 +1,4 @@
-import { useWeather } from '@/context/WeatherContext';
+import { useWeather } from '@/hooks/useWeather';
 import { formatTemperature, formatHumidity, formatWindSpeed, formatPrecipitation } from '@/utils/weatherUtils';
 import { Card, CardContent } from '@/components/ui/card';
 
