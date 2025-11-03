@@ -120,8 +120,8 @@ export async function fetchWeatherData(
       minTemperature: data.daily.temperature_2m_min[index],
     }));
 
-    // Map hourly forecast (first 24 hours)
-    const hourly = data.hourly.time.slice(0, 24).map((time, index) => ({
+    // Map hourly forecast (all hours for 7 days)
+    const hourly = data.hourly.time.map((time, index) => ({
       time,
       temperature: data.hourly.temperature_2m[index],
       weatherCode: data.hourly.weather_code[index],

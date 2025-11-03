@@ -1,7 +1,13 @@
 import { useState, useMemo } from 'react';
 import { useWeather } from '@/hooks/useWeather';
 import { formatShortDayName, formatTime, formatTemperature } from '@/utils/weatherUtils';
-import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { WeatherIcon } from '@/components/WeatherIcon';
 
@@ -13,26 +19,43 @@ export function HourlyForecast() {
   // Open-Meteo returns hourly data for the next 7 days
   // We need to group by day
   const hourlyByDay = useMemo(() => {
-    if (!weatherData?.hourly) return [];
-    const days: { date: string; hours: typeof weatherData.hourly }[] = [];
+    if (!weatherData?.hourly || !weatherData?.daily) return [];
+    
+    // Create a map of date strings to hourly data
+    const hourlyMap = new Map<string, typeof weatherData.hourly>();
     
     weatherData.hourly.forEach((hour) => {
-      const hourDate = new Date(hour.time);
-      const dateKey = hourDate.toDateString();
+      // Extract date from timestamp string
+      // The API returns timestamps in format "YYYY-MM-DDTHH:mm" or "YYYY-MM-DD HH:mm:ss"
+      // when timezone: 'auto' is used, dates are already in local timezone
+      // Extract date part (YYYY-MM-DD) directly from the string to avoid timezone conversion
+      const hourDateStr = hour.time;
+      let dateKey: string;
       
-      const existingDay = days.find((d) => new Date(d.date).toDateString() === dateKey);
-      
-      if (existingDay) {
-        existingDay.hours.push(hour);
+      if (hourDateStr.includes('T')) {
+        // ISO format: "YYYY-MM-DDTHH:mm" - extract date part before 'T'
+        dateKey = hourDateStr.split('T')[0];
+      } else if (hourDateStr.includes(' ')) {
+        // Space-separated: "YYYY-MM-DD HH:mm:ss" - extract date part before space
+        dateKey = hourDateStr.split(' ')[0];
       } else {
-        days.push({
-          date: hourDate.toISOString().split('T')[0],
-          hours: [hour],
-        });
+        // Already just a date string
+        dateKey = hourDateStr;
       }
+      
+      if (!hourlyMap.has(dateKey)) {
+        hourlyMap.set(dateKey, []);
+      }
+      hourlyMap.get(dateKey)!.push(hour);
     });
 
-    return days.slice(0, 7); // First 7 days
+    // Match hourly data to daily forecast dates
+    const days = weatherData.daily.map((day) => ({
+      date: day.date,
+      hours: hourlyMap.get(day.date) || [],
+    }));
+
+    return days;
   }, [weatherData]);
 
   if (!weatherData || !weatherData.daily.length) {
@@ -43,29 +66,31 @@ export function HourlyForecast() {
 
   return (
     <section aria-label="Hourly forecast" className="flex flex-col h-full lg:max-h-[calc(100vh-12rem)]">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-neutral-0 font-display">
           Hourly forecast
         </h2>
-      </div>
-
-      {/* Day selector tabs */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {weatherData.daily.map((day, index) => (
-          <Button
-            key={day.date}
-            variant={selectedDayIndex === index ? 'default' : 'outline'}
-            onClick={() => setSelectedDayIndex(index)}
-            className={`flex-shrink-0 ${
-              selectedDayIndex === index
-                ? 'bg-blue-500 text-neutral-0 hover:bg-blue-600'
-                : 'bg-neutral-800 border-neutral-700 text-neutral-300 hover:bg-neutral-700 hover:text-neutral-0'
-            }`}
-            aria-pressed={selectedDayIndex === index}
-          >
-            {formatShortDayName(day.date)}
-          </Button>
-        ))}
+        <Select
+          value={selectedDayIndex.toString()}
+          onValueChange={(value) => setSelectedDayIndex(Number(value))}
+        >
+          <SelectTrigger className="w-[140px] bg-neutral-800 border-neutral-700 text-neutral-0 hover:bg-neutral-700 focus:ring-2 focus:ring-blue-500">
+            <SelectValue>
+              {formatShortDayName(weatherData.daily[selectedDayIndex]?.date || '')}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent className="bg-neutral-800 border-neutral-700">
+            {weatherData.daily.map((day, index) => (
+              <SelectItem
+                key={day.date}
+                value={index.toString()}
+                className="text-neutral-0 focus:bg-neutral-700 focus:text-neutral-0 cursor-pointer"
+              >
+                {formatShortDayName(day.date)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Hourly temperatures - vertical scrollable list */}
