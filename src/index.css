@@ -94,3 +94,29 @@
     font-weight: 700;
   }
 }
+
+/* Custom Scrollbar Styles */
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--neutral-600)) hsl(var(--neutral-800));
+}
+
+/* Chrome, Safari, Edge */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: hsl(var(--neutral-800));
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--neutral-600));
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--neutral-300));
+}

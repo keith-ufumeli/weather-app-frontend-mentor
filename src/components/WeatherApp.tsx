@@ -22,7 +22,7 @@ export function WeatherApp() {
     <div className="min-h-screen bg-neutral-900">
       <Header />
       
-      <main className="container mx-auto px-4 md:px-6 py-8 max-w-7xl">
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
         {loading && !weatherData && <LoadingState />}
         
         {error && !weatherData && (
@@ -32,11 +32,18 @@ export function WeatherApp() {
         {!loading && !error && !weatherData && <EmptyState />}
 
         {weatherData && (
-          <div className="space-y-8">
-            <CurrentWeather />
-            <WeatherMetrics />
-            <DailyForecast />
-            <HourlyForecast />
+          <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6 lg:gap-8">
+            {/* Left Column */}
+            <div className="flex flex-col gap-6">
+              <CurrentWeather />
+              <WeatherMetrics />
+              <DailyForecast />
+            </div>
+            
+            {/* Right Column */}
+            <div className="flex flex-col">
+              <HourlyForecast />
+            </div>
           </div>
         )}
       </main>

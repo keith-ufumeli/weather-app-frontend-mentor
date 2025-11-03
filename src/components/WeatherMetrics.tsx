@@ -31,7 +31,7 @@ export function WeatherMetrics() {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {metrics.map((metric) => (
         <Card key={metric.label} className="bg-neutral-800 border-neutral-700">
           <CardContent className="p-4">

@@ -3,6 +3,7 @@ import { useWeather } from '@/hooks/useWeather';
 import { formatShortDayName, formatTime, formatTemperature } from '@/utils/weatherUtils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { WeatherIcon } from '@/components/WeatherIcon';
 
 export function HourlyForecast() {
   const { weatherData, units } = useWeather();
@@ -41,7 +42,7 @@ export function HourlyForecast() {
   const selectedDayHours = hourlyByDay[selectedDayIndex]?.hours || [];
 
   return (
-    <section aria-label="Hourly forecast">
+    <section aria-label="Hourly forecast" className="flex flex-col h-full lg:max-h-[calc(100vh-12rem)]">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-bold text-neutral-0 font-display">
           Hourly forecast
@@ -58,7 +59,7 @@ export function HourlyForecast() {
             className={`flex-shrink-0 ${
               selectedDayIndex === index
                 ? 'bg-blue-500 text-neutral-0 hover:bg-blue-600'
-                : 'bg-neutral-800 border-neutral-700 text-neutral-300 hover:bg-neutral-700'
+                : 'bg-neutral-800 border-neutral-700 text-neutral-300 hover:bg-neutral-700 hover:text-neutral-0'
             }`}
             aria-pressed={selectedDayIndex === index}
           >
@@ -67,23 +68,32 @@ export function HourlyForecast() {
         ))}
       </div>
 
-      {/* Hourly temperatures */}
-      <div className="flex gap-4 overflow-x-auto pb-4">
-        {selectedDayHours.map((hour) => (
-          <Card 
-            key={hour.time}
-            className="min-w-[100px] flex-shrink-0 bg-neutral-800 border-neutral-700"
-          >
-            <CardContent className="p-4 flex flex-col items-center text-center">
-              <p className="text-neutral-300 text-sm mb-2">
-                {formatTime(hour.time)}
-              </p>
-              <p className="text-neutral-0 text-lg font-semibold">
-                {formatTemperature(hour.temperature, units)}
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Hourly temperatures - vertical scrollable list */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden pr-2 custom-scrollbar">
+        <div className="flex flex-col gap-3">
+          {selectedDayHours.map((hour) => (
+            <Card 
+              key={hour.time}
+              className="bg-neutral-800 border-neutral-700"
+            >
+              <CardContent className="p-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <WeatherIcon 
+                    weatherCode={hour.weatherCode} 
+                    size="sm" 
+                    className="flex-shrink-0"
+                  />
+                  <p className="text-neutral-300 text-sm">
+                    {formatTime(hour.time)}
+                  </p>
+                </div>
+                <p className="text-neutral-0 text-lg font-semibold">
+                  {formatTemperature(hour.temperature, units)}
+                </p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
   );
