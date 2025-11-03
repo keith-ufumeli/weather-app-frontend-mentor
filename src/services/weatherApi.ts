@@ -11,6 +11,18 @@ const GEOCODING_API_URL = 'https://geocoding-api.open-meteo.com/v1/search';
 const FORECAST_API_URL = 'https://api.open-meteo.com/v1/forecast';
 
 /**
+ * Default fallback location: Harare, Zimbabwe
+ */
+export const DEFAULT_LOCATION: Location = {
+  id: 890298,
+  name: 'Harare',
+  latitude: -17.8292,
+  longitude: 31.0522,
+  country: 'Zimbabwe',
+  admin1: 'Harare',
+};
+
+/**
  * Search for locations by name using Open-Meteo Geocoding API
  */
 export async function searchLocations(
@@ -51,6 +63,63 @@ export async function searchLocations(
   } catch (error) {
     console.error('Error searching locations:', error);
     throw new Error('Failed to search locations. Please try again.');
+  }
+}
+
+/**
+ * Get location from coordinates using reverse geocoding
+ */
+export async function getLocationFromCoordinates(
+  latitude: number,
+  longitude: number
+): Promise<Location> {
+  try {
+    const params = new URLSearchParams({
+      latitude: latitude.toString(),
+      longitude: longitude.toString(),
+      count: '1',
+      language: 'en',
+      format: 'json',
+    });
+
+    const response = await fetch(`${GEOCODING_API_URL}?${params}`);
+
+    if (!response.ok) {
+      throw new Error(`Geocoding API error: ${response.status}`);
+    }
+
+    const data: GeocodingResponse = await response.json();
+
+    if (data.results && data.results.length > 0) {
+      const result = data.results[0];
+      return {
+        id: result.id,
+        name: result.name,
+        latitude: result.latitude,
+        longitude: result.longitude,
+        country: result.country,
+        admin1: result.admin1,
+      };
+    }
+
+    // Fallback: create minimal location object from coordinates
+    return {
+      id: Date.now(), // Temporary ID
+      name: 'Current Location',
+      latitude,
+      longitude,
+      country: 'Unknown',
+    };
+  } catch (error) {
+    console.error('Error reverse geocoding coordinates:', error);
+    // Fallback: create minimal location object from coordinates
+    return {
+      id: Date.now(), // Temporary ID
+      name: 'Current Location',
+      latitude,
+      longitude,
+      country: 'Unknown',
+    };
   }
 }
 
