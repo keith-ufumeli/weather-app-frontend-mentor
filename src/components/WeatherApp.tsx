@@ -1,5 +1,4 @@
 import { Header } from '@/components/Header';
-import { SearchBar } from '@/components/SearchBar';
 import { CurrentWeather } from '@/components/CurrentWeather';
 import { WeatherMetrics } from '@/components/WeatherMetrics';
 import { DailyForecast } from '@/components/DailyForecast';
@@ -24,10 +23,6 @@ export function WeatherApp() {
       <Header />
       
       <main className="container mx-auto px-4 md:px-6 py-8 max-w-7xl">
-        <div className="mb-8">
-          <SearchBar />
-        </div>
-
         {loading && !weatherData && <LoadingState />}
         
         {error && !weatherData && (

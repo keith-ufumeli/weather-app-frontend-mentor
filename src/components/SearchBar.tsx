@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useLocationSearch } from '@/hooks/useLocationSearch';
 import { useWeather } from '@/hooks/useWeather';
 import type { Location } from '@/types/weather';
@@ -29,28 +30,51 @@ export function SearchBar() {
     }
   };
 
+  const handleSearchClick = () => {
+    if (results.length > 0) {
+      handleSelectLocation(results[0]);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && results.length > 0) {
+      handleSelectLocation(results[0]);
+    }
+  };
+
   return (
-    <div className="relative w-full max-w-md mx-auto">
-      <div className="relative">
-        <img
-          src={loading ? loadingIcon : searchIcon}
-          alt=""
-          className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${loading ? 'animate-spin' : ''}`}
-          aria-hidden="true"
-        />
-        <Input
-          type="text"
-          placeholder="Search for a city, e.g., New York"
-          value={query}
-          onChange={handleInputChange}
-          onFocus={handleInputFocus}
-          className="pl-12 pr-4 py-3 text-base bg-neutral-0 border-neutral-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0"
-          aria-label="Search for a city"
-          aria-autocomplete="list"
-          aria-expanded={showResults && results.length > 0}
-          aria-controls="search-results"
-          aria-haspopup="listbox"
-        />
+    <div className="relative w-full max-w-lg mx-auto">
+      <div className="relative flex gap-2">
+        <div className="relative flex-1">
+          <img
+            src={loading ? loadingIcon : searchIcon}
+            alt=""
+            className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${loading ? 'animate-spin' : ''}`}
+            aria-hidden="true"
+          />
+          <Input
+            type="text"
+            placeholder="Search for a place..."
+            value={query}
+            onChange={handleInputChange}
+            onFocus={handleInputFocus}
+            onKeyDown={handleKeyDown}
+            className="pl-12 pr-4 py-3 text-base bg-neutral-0 border-neutral-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 rounded-md"
+            aria-label="Search for a city"
+            title="Search for a city"
+            aria-autocomplete="list"
+            aria-expanded={showResults && results.length > 0}
+            aria-controls="search-results"
+            aria-haspopup="listbox"
+          />
+        </div>
+        <Button
+          onClick={handleSearchClick}
+          disabled={loading || results.length === 0}
+          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-neutral-0 font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Search
+        </Button>
       </div>
 
       {showResults && error && (
@@ -67,6 +91,7 @@ export function SearchBar() {
           id="search-results"
           className="absolute top-full left-0 right-0 mt-2 bg-neutral-0 border border-neutral-200 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto py-2"
           role="listbox"
+          aria-label="Search results"
         >
           {results.map((location) => (
             <button
