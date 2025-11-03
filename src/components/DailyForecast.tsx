@@ -16,11 +16,11 @@ export function DailyForecast() {
         Daily forecast
       </h2>
       
-      <div className="flex gap-4 overflow-x-auto pb-4 md:grid md:grid-cols-7 md:overflow-x-visible">
+      <div className="grid grid-cols-3 gap-4 md:grid-cols-7">
         {weatherData.daily.map((day) => (
           <Card 
             key={day.date} 
-            className="min-w-[120px] md:min-w-0 bg-neutral-800 border-neutral-700 flex-shrink-0"
+            className="bg-neutral-800 border-neutral-700"
           >
             <CardContent className="p-4 flex flex-col items-center text-center">
               <p className="text-neutral-300 text-sm mb-3 font-medium">
