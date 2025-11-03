@@ -7,12 +7,39 @@ export default {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['DM Sans', 'system-ui', 'sans-serif'],
+  			display: ['Bricolage Grotesque', 'DM Sans', 'system-ui', 'sans-serif'],
+  		},
+  		fontSize: {
+  			base: '18px',
+  		},
+  		screens: {
+  			mobile: '375px',
+  			desktop: '1440px',
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  			neutral: {
+  				900: 'hsl(var(--neutral-900))',
+  				800: 'hsl(var(--neutral-800))',
+  				700: 'hsl(var(--neutral-700))',
+  				600: 'hsl(var(--neutral-600))',
+  				300: 'hsl(var(--neutral-300))',
+  				200: 'hsl(var(--neutral-200))',
+  				0: 'hsl(var(--neutral-0))',
+  			},
+  			orange: {
+  				500: 'hsl(var(--orange-500))',
+  			},
+  			blue: {
+  				500: 'hsl(var(--blue-500))',
+  				700: 'hsl(var(--blue-700))',
+  			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
