@@ -6,6 +6,7 @@ import { HourlyForecast } from '@/components/HourlyForecast';
 import { LoadingState } from '@/components/LoadingState';
 import { ErrorState } from '@/components/ErrorState';
 import { EmptyState } from '@/components/EmptyState';
+import { Footer } from '@/components/Footer';
 import { useWeather } from '@/hooks/useWeather';
 
 export function WeatherApp() {
@@ -19,10 +20,10 @@ export function WeatherApp() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-900">
+    <div className="min-h-screen bg-neutral-900 flex flex-col">
       <Header />
       
-      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl">
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 max-w-7xl flex-1">
         {loading && !weatherData && <LoadingState />}
         
         {error && !weatherData && (
@@ -47,6 +48,8 @@ export function WeatherApp() {
           </div>
         )}
       </main>
+      
+      <Footer />
     </div>
   );
 }
