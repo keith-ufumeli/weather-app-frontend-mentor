@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +12,26 @@ import logoIcon from '@/assets/images/logo.svg';
 import unitsIcon from '@/assets/images/icon-units.svg';
 import checkmarkIcon from '@/assets/images/icon-checkmark.svg';
 
+const UNITS_STORAGE_KEY = 'weather-app-units';
+
 export function Header() {
   const { units, setUnits } = useWeather();
+  const [hasSelectedUnits, setHasSelectedUnits] = useState(false);
+
+  useEffect(() => {
+    // Check if user has previously selected units
+    const saved = localStorage.getItem(UNITS_STORAGE_KEY);
+    setHasSelectedUnits(saved === 'imperial' || saved === 'metric');
+  }, []);
+
+  const handleUnitsChange = (newUnits: 'metric' | 'imperial') => {
+    setUnits(newUnits);
+    setHasSelectedUnits(true);
+  };
+
+  const displayText = hasSelectedUnits 
+    ? (units === 'imperial' ? 'Imperial' : 'Metric')
+    : 'Units';
 
   return (
     <header className="bg-neutral-900">
@@ -26,17 +46,18 @@ export function Header() {
           
           <DropdownMenu>
             <DropdownMenuTrigger 
-              className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-neutral-0"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-neutral-0 border border-neutral-700"
               aria-label="Units selector"
             >
               <img src={unitsIcon} alt="" className="w-5 h-5" aria-hidden="true" />
               <span className="text-sm font-medium">
-                {units === 'imperial' ? 'Imperial' : 'Metric'}
+                {displayText}
               </span>
+              <ChevronDown className="w-4 h-4" aria-hidden="true" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuItem
-                onClick={() => setUnits('metric')}
+                onClick={() => handleUnitsChange('metric')}
                 className="flex items-center justify-between cursor-pointer"
               >
                 <div>
@@ -50,7 +71,7 @@ export function Header() {
                 )}
               </DropdownMenuItem>
               <DropdownMenuItem
-                onClick={() => setUnits('imperial')}
+                onClick={() => handleUnitsChange('imperial')}
                 className="flex items-center justify-between cursor-pointer"
               >
                 <div>
