@@ -44,7 +44,7 @@ export function SearchBar() {
 
   return (
     <div className="relative w-full max-w-lg mx-auto">
-      <div className="relative flex gap-2">
+      <div className="relative flex flex-col md:flex-row gap-2">
         <div className="relative flex-1">
           <img
             src={loading ? loadingIcon : searchIcon}
@@ -59,7 +59,7 @@ export function SearchBar() {
             onChange={handleInputChange}
             onFocus={handleInputFocus}
             onKeyDown={handleKeyDown}
-            className="pl-12 pr-4 py-3 text-base bg-neutral-0 border-neutral-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-offset-0 rounded-md"
+            className="pl-12 pr-4 py-3 text-base bg-neutral-800 border-neutral-700 text-neutral-0 placeholder:text-neutral-400 focus:border-neutral-0 focus:ring-2 focus:ring-neutral-0 focus:ring-offset-0 rounded-md"
             aria-label="Search for a city"
             title="Search for a city"
             aria-autocomplete="list"
@@ -71,7 +71,7 @@ export function SearchBar() {
         <Button
           onClick={handleSearchClick}
           disabled={loading || results.length === 0}
-          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-neutral-0 font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-neutral-0 font-medium rounded-md disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-neutral-0 focus:ring-offset-2 focus:ring-offset-neutral-900"
         >
           Search
         </Button>
@@ -98,7 +98,7 @@ export function SearchBar() {
               key={location.id}
               type="button"
               onClick={() => handleSelectLocation(location)}
-              className="w-full text-left px-4 py-2 hover:bg-neutral-200 focus:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset transition-colors"
+              className="w-full text-left px-4 py-2 hover:bg-neutral-200 focus:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-0 focus:ring-inset transition-colors"
               role="option"
               aria-selected="false"
             >

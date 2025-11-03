@@ -54,7 +54,7 @@ export function UnitsDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger 
-        className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-neutral-900 transition-colors text-neutral-0 border border-neutral-700"
+        className="flex items-center gap-2 px-4 py-2.5 rounded-md bg-neutral-800 hover:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-0 focus:ring-offset-2 focus:ring-offset-neutral-900 transition-colors text-neutral-0 border border-neutral-700"
         aria-label="Units selector"
       >
         <img src={unitsIcon} alt="" className="w-5 h-5" aria-hidden="true" />

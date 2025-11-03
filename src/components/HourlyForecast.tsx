@@ -120,7 +120,7 @@ export function HourlyForecast() {
           value={selectedDayIndex.toString()}
           onValueChange={(value) => setSelectedDayIndex(Number(value))}
         >
-          <SelectTrigger className="w-[140px] bg-neutral-800 border-neutral-700 text-neutral-0 hover:bg-neutral-700 focus:ring-2 focus:ring-blue-500">
+          <SelectTrigger className="w-[140px] bg-neutral-800 border-neutral-700 text-neutral-0 hover:bg-neutral-700 focus:ring-2 focus:ring-neutral-0">
             <SelectValue>
               {formatShortDayName(weatherData.daily[selectedDayIndex]?.date || '')}
             </SelectValue>
