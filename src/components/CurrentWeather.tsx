@@ -1,6 +1,6 @@
 import { WeatherIcon } from '@/components/WeatherIcon';
 import { useWeather } from '@/hooks/useWeather';
-import { formatTemperature, getLocationDisplayName } from '@/utils/weatherUtils';
+import { formatTemperature, getLocationDisplayName, formatFullDate } from '@/utils/weatherUtils';
 import bgTodayLarge from '@/assets/images/bg-today-large.svg';
 import bgTodaySmall from '@/assets/images/bg-today-small.svg';
 
@@ -12,11 +12,12 @@ export function CurrentWeather() {
   }
 
   const { current, location } = weatherData;
-  const displayName = getLocationDisplayName(location.name, location.admin1, location.country);
+  const displayName = getLocationDisplayName(location.name, location.country);
+  const currentDate = formatFullDate();
 
   return (
     <div 
-      className="relative overflow-hidden rounded-2xl bg-cover bg-center min-h-[300px] lg:min-h-[320px]"
+      className="relative overflow-hidden rounded-2xl bg-cover bg-center min-h-[280px] lg:min-h-[300px]"
       style={{
         backgroundImage: `url(${bgTodaySmall})`,
       }}
@@ -30,21 +31,27 @@ export function CurrentWeather() {
         aria-hidden="true"
       />
       
-      <div className="relative z-10 p-6 md:p-8 flex flex-col items-center justify-center min-h-[300px] lg:min-h-[320px]">
-        <WeatherIcon 
-          weatherCode={current.weatherCode} 
-          size="lg" 
-          className="mb-3 lg:mb-4"
-        />
+      <div className="relative z-10 p-6 md:p-8 lg:p-10 flex items-center justify-between min-h-[280px] lg:min-h-[300px]">
+        {/* Left side - Location and Date */}
+        <div className="flex flex-col justify-center">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold text-neutral-0 mb-1 lg:mb-2">
+            {displayName}
+          </h2>
+          <p className="text-base md:text-lg lg:text-xl text-neutral-200">
+            {currentDate}
+          </p>
+        </div>
         
-        <div className="text-center">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-0 mb-2 font-display">
+        {/* Right side - Temperature and Icon */}
+        <div className="flex items-center gap-4 md:gap-6">
+          <WeatherIcon 
+            weatherCode={current.weatherCode} 
+            size="lg" 
+            className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
+          />
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-0 font-display">
             {formatTemperature(current.temperature, units)}
           </h1>
-          
-          <p className="text-lg md:text-xl lg:text-2xl text-neutral-200">
-            {displayName}
-          </p>
         </div>
       </div>
     </div>

@@ -173,18 +173,28 @@ export function formatHumidity(humidity: number): string {
 }
 
 /**
- * Get location display name (city, state/country)
+ * Get location display name (city, country)
  */
 export function getLocationDisplayName(
   name: string,
-  admin1?: string,
   country?: string
 ): string {
   const parts = [name];
-  if (admin1) {
-    parts.push(admin1);
-  } else if (country) {
+  if (country) {
     parts.push(country);
   }
   return parts.join(', ');
+}
+
+/**
+ * Format date to readable format (e.g., "Tuesday, Aug 5, 2025")
+ */
+export function formatFullDate(dateString?: string): string {
+  const date = dateString ? new Date(dateString) : new Date();
+  return date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 }
