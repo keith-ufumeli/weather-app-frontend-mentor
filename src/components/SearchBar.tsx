@@ -79,17 +79,17 @@ export function SearchBar() {
 
       {showResults && error && (
         <div 
-          className="absolute top-full left-0 right-0 mt-2 bg-neutral-0 border border-neutral-200 rounded-md shadow-lg z-50 p-4"
+          className="absolute top-full left-0 right-0 mt-2 bg-neutral-800 border border-neutral-700 rounded-md shadow-lg z-50 p-4"
           role="alert"
         >
-          <div className="text-sm text-neutral-600 text-center">{error}</div>
+          <div className="text-sm text-neutral-300 text-center">{error}</div>
         </div>
       )}
 
       {showResults && results.length > 0 && (
         <div 
           id="search-results"
-          className="absolute top-full left-0 right-0 mt-2 bg-neutral-0 border border-neutral-200 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto py-2"
+          className="absolute top-full left-0 right-0 mt-2 bg-neutral-800 border border-neutral-700 rounded-md shadow-lg z-50 max-h-60 overflow-y-auto custom-scrollbar py-2"
           role="listbox"
           aria-label="Search results"
         >
@@ -98,18 +98,18 @@ export function SearchBar() {
               key={location.id}
               type="button"
               onClick={() => handleSelectLocation(location)}
-              className="w-full text-left px-4 py-2 hover:bg-neutral-200 focus:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-0 focus:ring-inset transition-colors"
+              className="w-full text-left px-4 py-2 hover:bg-neutral-700 focus:bg-neutral-700 focus:outline-none focus:ring-2 focus:ring-neutral-0 focus:ring-inset transition-colors"
               role="option"
               aria-selected="false"
             >
-              <div className="font-medium">{location.name}</div>
+              <div className="font-medium text-neutral-0">{location.name}</div>
               {location.admin1 && (
-                <div className="text-sm text-neutral-600">
+                <div className="text-sm text-neutral-300">
                   {location.admin1}, {location.country}
                 </div>
               )}
               {!location.admin1 && location.country && (
-                <div className="text-sm text-neutral-600">{location.country}</div>
+                <div className="text-sm text-neutral-300">{location.country}</div>
               )}
             </button>
           ))}
