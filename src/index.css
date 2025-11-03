@@ -45,6 +45,11 @@
     --blue-500: 233 67% 56%;
     --blue-700: 248 70% 36%;
     
+    /* Scrollbar Colors */
+    --scrollbar-thumb: var(--neutral-600);
+    --scrollbar-track: var(--neutral-800);
+    --scrollbar-thumb-hover: var(--neutral-300);
+    
     /* Shadcn Colors */
     --background: var(--neutral-0);
     --foreground: var(--neutral-900);
@@ -75,7 +80,7 @@
   }
   
   html {
-    font-size: 18px;
+    font-size: clamp(1rem, 1.125rem, 1.25rem);
   }
   
   body {
@@ -99,7 +104,7 @@
 /* Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: hsl(var(--neutral-600)) hsl(var(--neutral-800));
+  scrollbar-color: hsl(var(--scrollbar-thumb)) hsl(var(--scrollbar-track));
 }
 
 /* Chrome, Safari, Edge */
@@ -108,15 +113,15 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: hsl(var(--neutral-800));
+  background: hsl(var(--scrollbar-track));
   border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(var(--neutral-600));
+  background: hsl(var(--scrollbar-thumb));
   border-radius: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--neutral-300));
+  background: hsl(var(--scrollbar-thumb-hover));
 }

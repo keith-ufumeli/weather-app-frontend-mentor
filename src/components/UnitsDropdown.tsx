@@ -71,6 +71,7 @@ export function UnitsDropdown() {
         {/* Switch Units Button */}
         <div className="p-4 pb-3">
           <button
+            type="button"
             onClick={() => handleUnitsChange(units === 'metric' ? 'imperial' : 'metric')}
             className="w-full px-4 py-2.5 bg-neutral-700 hover:bg-neutral-600 rounded-lg text-sm font-medium text-neutral-0 transition-colors"
           >
@@ -87,6 +88,7 @@ export function UnitsDropdown() {
             {temperatureOptions.map((option) => (
               <button
                 key={option.value}
+                type="button"
                 onClick={() => handleUnitsChange(option.value)}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors ${
                   units === option.value
@@ -112,6 +114,7 @@ export function UnitsDropdown() {
             {windSpeedOptions.map((option) => (
               <button
                 key={option.value}
+                type="button"
                 onClick={() => handleUnitsChange(option.value)}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors ${
                   units === option.value
@@ -137,6 +140,7 @@ export function UnitsDropdown() {
             {precipitationOptions.map((option) => (
               <button
                 key={option.value}
+                type="button"
                 onClick={() => handleUnitsChange(option.value)}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-sm transition-colors ${
                   units === option.value

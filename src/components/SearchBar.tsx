@@ -63,9 +63,7 @@ export function SearchBar() {
             aria-label="Search for a city"
             title="Search for a city"
             aria-autocomplete="list"
-            aria-expanded={showResults && results.length > 0}
-            aria-controls="search-results"
-            aria-haspopup="listbox"
+            aria-controls={showResults && results.length > 0 ? "search-results" : undefined}
           />
         </div>
         <Button
