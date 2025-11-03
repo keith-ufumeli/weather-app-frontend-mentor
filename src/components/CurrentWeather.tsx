@@ -34,7 +34,7 @@ export function CurrentWeather() {
       <div className="relative z-10 p-6 md:p-8 lg:p-10 flex items-center justify-between min-h-[280px] lg:min-h-[300px]">
         {/* Left side - Location and Date */}
         <div className="flex flex-col justify-center">
-          <h2 className="text-xl md:text-2xl lg:text-2xl font-semibold text-neutral-0 mb-1 lg:mb-2">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-semibold text-neutral-0 mb-1 lg:mb-2">
             {displayName}
           </h2>
           <p className="text-sm md:text-base lg:text-base text-neutral-200">
