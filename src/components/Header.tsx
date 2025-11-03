@@ -18,7 +18,7 @@ export function Header() {
         </div>
 
         {/* Main heading */}
-        <h1 className="text-3xl md:text-4xl font-bold text-neutral-0 text-center mb-6 font-display">
+        <h1 className="text-3xl md:text-4xl font-bold text-neutral-0 text-center mb-8 md:mb-10 font-display">
           How's the sky looking today?
         </h1>
 
