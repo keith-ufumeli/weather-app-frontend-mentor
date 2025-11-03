@@ -35,7 +35,7 @@ Users should be able to:
 
 ### Screenshot
 
-![](./screenshot.png)
+![Weather app showing current weather conditions, 7-day forecast, and hourly forecast](./screenshot.png)
 
 ### Links
 
@@ -58,8 +58,8 @@ Users should be able to:
 - [shadcn/ui](https://ui.shadcn.com/) - Re-usable components built with Radix UI and Tailwind CSS
 - [Radix UI](https://www.radix-ui.com/) - Accessible component primitives
 - [React Context API](https://react.dev/reference/react/createContext) - State management
-- [Open-Meteo API](https://open-meteo.com/) - Weather data
-  
+- [Open-Meteo API](https://open-meteo.com/) - Weather data and geocoding
+- [Nominatim (OpenStreetMap)](https://nominatim.org/) - Reverse geocoding for accurate location data
 
 ### What I learned
 
@@ -111,6 +111,22 @@ const hourlyByDay = useMemo(() => {
 - Learned how to customize shadcn components by copying them into the project and modifying them directly
 - Discovered the importance of separating variant utilities from components to maintain Fast Refresh compatibility
 
+**Geolocation and Reverse Geocoding:**
+- Implemented browser geolocation API to automatically detect user location on app load
+- Created a dual API strategy for reverse geocoding: primary Nominatim (OpenStreetMap) with Open-Meteo as fallback
+- Solved the "Unknown" country issue by using Nominatim's more accurate reverse geocoding service
+- Built distance calculation using Haversine formula to find nearest valid city when multiple results are returned
+- Implemented proper error handling and fallbacks for geolocation permission denial or API failures
+
+```typescript
+// Dual API strategy for reliable reverse geocoding
+const nominatimResult = await getLocationFromNominatim(latitude, longitude);
+if (nominatimResult && nominatimResult.country !== 'Unknown') {
+  return nominatimResult; // Use Nominatim if valid
+}
+// Fallback to Open-Meteo with distance-based filtering
+```
+
 ### Continued development
 
 For future projects, I'd like to focus on:
@@ -129,6 +145,7 @@ For future projects, I'd like to focus on:
 - [shadcn/ui Documentation](https://ui.shadcn.com/) - Component library documentation and examples
 - [Radix UI Documentation](https://www.radix-ui.com/primitives/docs/overview/introduction) - Accessible component primitives
 - [Open-Meteo API Docs](https://open-meteo.com/en/docs) - Weather API documentation
+- [Nominatim Documentation](https://nominatim.org/release-docs/develop/api/Reverse/) - Reverse geocoding API documentation
 - [React Fast Refresh](https://github.com/facebook/react/issues/16604) - Understanding Fast Refresh requirements
 
 ## Author
