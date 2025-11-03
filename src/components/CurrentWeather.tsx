@@ -49,7 +49,7 @@ export function CurrentWeather() {
             size="lg" 
             className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24"
           />
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold text-neutral-0 font-display">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-0 font-display">
             {formatTemperature(current.temperature, units)}
           </h1>
         </div>
